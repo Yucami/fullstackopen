@@ -1,28 +1,28 @@
 import { useState } from 'react'
 
-// const TotalComments = props => (
-//   <div>
-//     All {props.total}
-//   </div>
-// )
-
-const Display = props => <div>{props.value} {props.text}</div>
-
 const Button = (props) => (
   <button onClick={props.handleClick}>
     {props.text}
   </button>
 )
 
+const StatisticLine = (props) => (
+  <div>
+    {props.text} {props.value}
+  </div>
+)
+
 const Statistics = props => {
   const average = props.total === 0 ? 0 : (props.setGood - props.setBad) / props.total;
-  console.log('average', average, props);
   const positivePercentage = props.total === 0 ? 0 : (props.setGood / props.total) * 100;
-  console.log('positivePercentage', positivePercentage, props); 
   return (
     <div>
-      <div>Average {average}</div>
-      <div>Positive {positivePercentage.toFixed(2)}%</div>
+      <StatisticLine text="good" value={props.setGood} />
+      <StatisticLine text="neutral" value={props.setNeutral} />
+      <StatisticLine text="bad" value={props.setBad} />
+      <StatisticLine text="all" value={props.total} />
+      <StatisticLine text="average" value={average} />
+      <StatisticLine text="positive" value={positivePercentage.toFixed(2) + ' %'} />
     </div>
   )
 }
@@ -45,11 +45,6 @@ const App = () => {
         <div>No feedback given</div>
       ) : (
         <div>
-          <Display value={good} text="good"/>
-          <Display value={neutral} text="neutral"/>
-          <Display value={bad} text="bad"/>
-          <div>All {totalComments}</div>
-          {/* <TotalComments total={totalComments}/> */}
           <Statistics setGood={good} setNeutral={neutral} setBad={bad} total={totalComments} />
         </div>
       )}
