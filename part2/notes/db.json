@@ -43,6 +43,11 @@
     {
       "id": "16af",
       "content": "helloooo!",
+      "important": false
+    },
+    {
+      "id": "e12b",
+      "content": "funciona con el boton de important?",
       "important": true
     }
   ]
