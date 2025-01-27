@@ -28,7 +28,7 @@
     {
       "id": "0f36",
       "content": "console despues del then",
-      "important": false
+      "important": true
     },
     {
       "id": "9bbb",
@@ -38,12 +38,12 @@
     {
       "id": "49e9",
       "content": "qwerpoiu",
-      "important": true
+      "important": false
     },
     {
       "id": "16af",
       "content": "helloooo!",
-      "important": false
+      "important": true
     },
     {
       "id": "e12b",
