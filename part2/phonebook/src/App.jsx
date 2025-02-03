@@ -38,14 +38,17 @@ const PersonForm = ({ addPerson, newName, setNewName, newNumber, setNewNumber })
   );
 };
 
-const Persons = ({ persons, searchPerson }) => {
+const Persons = ({ persons, searchPerson, removePerson }) => {
   const personsToShow = persons.filter(person => 
     person.name.toLowerCase().includes(searchPerson.toLowerCase())
   );
   return (
     <div>
       {personsToShow.map(person => 
-        <div key={person.name}>{person.name} {person.number}</div>
+        <div key={person.name}>
+          {person.name} {person.number}
+          <button onClick={() => removePerson(person.id, person.name)}>delete</button>
+        </div>
       )}
     </div>
   );
@@ -92,7 +95,17 @@ const App = () => {
           console.error('Error adding person:', error);
         });
     }
-  }; 
+  };
+
+  const removePerson = (id, name) => {
+    if (window.confirm(`Delete ${name}?`)) {
+      numbersService.remove(id).then(() => {
+        setPersons(persons.filter(person => person.id !== id));
+      }).catch(error => {
+        console.error('Error deleting person:', error);
+      });
+    }
+  };
 
   return (
     <div>
@@ -101,7 +114,7 @@ const App = () => {
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
       <h2>Numbers</h2>
-      <Persons persons={persons} searchPerson={searchPerson} />
+      <Persons persons={persons} searchPerson={searchPerson} removePerson={removePerson}/>
     </div>
   );
 };
