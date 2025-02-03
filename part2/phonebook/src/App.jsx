@@ -62,6 +62,7 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchPerson, setSearchPerson] = useState('');
   const [message, setMessage] = useState(null);
+  const [messageType, setMessageType] = useState('');
 
   useEffect(() => {
     numbersService
@@ -87,10 +88,14 @@ const App = () => {
           setNewName('');
           setNewNumber('');
           setMessage(`Updated ${returnedPerson.name}'s number`);
+          setMessageType('success');
           setTimeout(() => {
             setMessage(null);
+            setMessageType('');
           }, 5000);
         }).catch(error => {
+          setMessage(`Error updating ${existingPerson.name}`);
+          setMessageType('error');
           console.error('Error updating person:', error);
         });
       }
@@ -105,10 +110,13 @@ const App = () => {
         setNewName('');
         setNewNumber('');
         setMessage(`Added ${returnedPerson.name}`);
+        setMessageType('success');
         setTimeout(() => {
           setMessage(null);
         }, 5000);
       }).catch(error => {
+        setMessage(`Error adding ${newName}`);
+        setMessageType('error');
         console.error('Error adding person:', error);
       });
     }
@@ -118,7 +126,14 @@ const App = () => {
     if (window.confirm(`Delete ${name}?`)) {
       numbersService.remove(id).then(() => {
         setPersons(persons.filter(person => person.id !== id));
+        setMessage(`Deleted ${name}`);
+        setMessageType('success');
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       }).catch(error => {
+        setMessage(`Error deleting ${name}`);
+        setMessageType('error');
         console.error('Error deleting person:', error);
       });
     }
@@ -127,7 +142,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Notification message={message} />
+      <Notification message={message} type={messageType} />
       <Filter searchPerson={searchPerson} setSearchPerson={setSearchPerson} />
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />

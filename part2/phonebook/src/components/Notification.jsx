@@ -1,10 +1,10 @@
-const Notification = ({ message }) => {
+const Notification = ({ message, type }) => {
     if (message === null) {
       return null;
     }
   
     const notificationStyle = {
-      color: 'green',
+      color: type === 'success' ? 'green' : 'red',
       background: 'lightgrey',
       fontSize: 20,
       borderStyle: 'solid',
@@ -20,4 +20,4 @@ const Notification = ({ message }) => {
     );
   };
   
-  export default Notification;
+export default Notification;
