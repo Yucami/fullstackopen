@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import Notification from './components/Notification';
 import numbersService from './services/numbers';
 
 const Filter = ({ searchPerson, setSearchPerson }) => {
@@ -60,6 +61,7 @@ const App = () => {
   const [newName, setNewName] = useState('');
   const [newNumber, setNewNumber] = useState('');
   const [searchPerson, setSearchPerson] = useState('');
+  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     numbersService
@@ -84,6 +86,10 @@ const App = () => {
           setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson));
           setNewName('');
           setNewNumber('');
+          setMessage(`Updated ${returnedPerson.name}'s number`);
+          setTimeout(() => {
+            setMessage(null);
+          }, 5000);
         }).catch(error => {
           console.error('Error updating person:', error);
         });
@@ -98,6 +104,10 @@ const App = () => {
         setPersons(persons.concat(returnedPerson));
         setNewName('');
         setNewNumber('');
+        setMessage(`Added ${returnedPerson.name}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       }).catch(error => {
         console.error('Error adding person:', error);
       });
@@ -117,6 +127,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={message} />
       <Filter searchPerson={searchPerson} setSearchPerson={setSearchPerson} />
       <h3>Add a new</h3>
       <PersonForm addPerson={addPerson} newName={newName} setNewName={setNewName} newNumber={newNumber} setNewNumber={setNewNumber} />
