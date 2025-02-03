@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+import numbersService from './services/numbers';
 
 const Filter = ({ searchPerson, setSearchPerson }) => {
   return (
@@ -58,18 +58,18 @@ const App = () => {
   const [newNumber, setNewNumber] = useState('');
   const [searchPerson, setSearchPerson] = useState('');
 
-  const hook = () => {
-    console.log('effect')
-    axios
-      .get('http://localhost:3001/persons')
+  useEffect(() => {
+    numbersService
+      .getAll()
       .then(response => {
-        console.log('promise fulfilled')
-        setPersons(response.data)
+        setPersons(response);
       })
-  }
+      .catch(error => {
+        console.error('Error fetching persons:', error);
+      });
+  }, []);
   
-  useEffect(hook, [])
-  console.log('render', persons.length, 'persons')
+  console.log('render', persons.length, 'persons');
 
   const addPerson = (event) => {
     event.preventDefault()
@@ -81,9 +81,16 @@ const App = () => {
         number: newNumber,
       };
 
-      setPersons(persons.concat(personObject));
-      setNewName('');
-      setNewNumber('');
+      numbersService
+        .create(personObject)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson));
+          setNewName('');
+          setNewNumber('');
+        })
+        .catch(error => {
+          console.error('Error adding person:', error);
+        });
     }
   }; 
 
