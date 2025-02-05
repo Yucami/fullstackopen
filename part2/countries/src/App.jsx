@@ -11,7 +11,8 @@ const CountryList = ({ countries, handleShowCountry }) => (
   <div>
     {countries.map(country => (
       <div key={country.name.common}>
-        {country.name.common} 
+        {country.name.common}
+        <button onClick={() => handleShowCountry(country.name.common)}>show</button> 
       </div>
     ))}
   </div>
@@ -42,12 +43,15 @@ const App = () => {
       axios
         .get(`https://studies.cs.helsinki.fi/restcountries/api/all`)
         .then(response => {
+          // console.log('response', response);
           const filteredCountries = response.data.filter(country =>
             country.name.common.toLowerCase().includes(searchTerm.toLowerCase())
           );
+          console.log('filteredCountries', filteredCountries);
           setCountries(filteredCountries);
           if (filteredCountries.length === 1) {
             setSelectedCountry(filteredCountries[0]);
+            // console.log('filteredCountries', filteredCountries);
           } else {
             setSelectedCountry(null);
           }
