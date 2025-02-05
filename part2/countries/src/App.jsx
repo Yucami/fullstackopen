@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import CountryDetail from './components/CountryDetail';
 import axios from 'axios';
 
 const Search = ({ searchTerm, handleSearchChange }) => (
@@ -15,21 +16,6 @@ const CountryList = ({ countries, handleShowCountry }) => (
         <button onClick={() => handleShowCountry(country.name.common)}>show</button> 
       </div>
     ))}
-  </div>
-);
-
-const CountryDetail = ({ country }) => (
-  <div>
-    <h2>{country.name.common}</h2>
-    <div>capital: {country.capital}</div>
-    <div>area: {country.area}</div>
-    <h3>languages:</h3>
-    <ul>
-      {Object.values(country.languages).map(language => (
-        <li key={language}>{language}</li>
-      ))}
-    </ul>
-    <img src={country.flags.png} alt={`Flag of ${country.name.common}`} width="150" />
   </div>
 );
 
@@ -51,7 +37,7 @@ const App = () => {
           setCountries(filteredCountries);
           if (filteredCountries.length === 1) {
             setSelectedCountry(filteredCountries[0]);
-            // console.log('filteredCountries', filteredCountries);
+            // console.log('filteredCountries', setSelectedCountry);
           } else {
             setSelectedCountry(null);
           }
@@ -69,6 +55,7 @@ const App = () => {
   const handleShowCountry = (countryName) => {
     const country = countries.find(c => c.name.common === countryName);
     setSelectedCountry(country);
+    console.log('Selected Country', country);
   };
 
   return (
