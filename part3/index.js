@@ -19,6 +19,8 @@ let notes = [
   }
 ]
 
+app.use(express.static('dist'))
+
 const requestLogger = (request, response, next) => {
     console.log('Method:', request.method)
     console.log('Path:  ', request.path)
@@ -26,6 +28,10 @@ const requestLogger = (request, response, next) => {
     console.log('---')
     next()
 }
+
+const cors = require('cors')
+
+app.use(cors())
 
 app.use(express.json())
 app.use(requestLogger)
@@ -80,6 +86,22 @@ app.post('/api/notes', (request, response) => {
     response.json(note)
 })
 
+app.put('/api/notes/:id', (request, response) => {
+    const id = Number(request.params.id);
+    const body = request.body;
+
+    const note = notes.find(n => n.id === id);
+    if (!note) {
+        return response.status(404).json({ error: "Note not found" });
+    }
+
+    const updatedNote = { ...note, important: body.important };
+
+    notes = notes.map(n => (n.id !== id ? n : updatedNote));
+    response.json(updatedNote);
+});
+
+
 app.delete('/api/notes/:id', (request, response) => {
     const id = Number(request.params.id)
     notes = notes.filter(note => note.id !== id)
@@ -89,7 +111,7 @@ app.delete('/api/notes/:id', (request, response) => {
 
 app.use(unknownEndpoint)
 
-const PORT = 3001
+const PORT = Number(process.env.PORT) || 3001;
 app.listen(PORT, () => {
-console.log(`Server running on port ${PORT}`)
+    console.log(`Server running on port ${PORT}`)
 })
