@@ -68,12 +68,32 @@ const App = () => {
     numbersService
       .getAll()
       .then(response => {
-        setPersons(response);
+        console.log("API response:", response);
+        setPersons(response);  // Aquí no deberías acceder a response.data si ya lo haces en numbersService
       })
       .catch(error => {
         console.error('Error fetching persons:', error);
       });
   }, []);
+
+  // useEffect(() => {
+  //   numbersService
+  //     .getAll()
+  //     .then(response => {
+  //       console.log("API response:", response);
+  //       console.log("Persons data:", response.data);
+  //       console.log("Tipo de datos recibidos:", typeof response.data);
+  //       if (Array.isArray(response.data)) {
+  //         setPersons(response.data);
+  //       } else {
+  //         console.error("Error: La API no devuelve un array");
+  //         setPersons([]); // Evitar que sea undefined
+  //       }
+  //     })
+  //     .catch(error => {
+  //       console.error('Error fetching persons:', error);
+  //     });
+  // }, []);
   
   console.log('render', persons.length, 'persons');
 
