@@ -10,12 +10,6 @@ const password = process.argv[2]
 const url = `mongodb+srv://fullstackopen:${password}@cluster0.vvyub.mongodb.net/noteApp?retryWrites=true&w=majority&appName=Cluster0`
 
 mongoose.set('strictQuery',false)
-// mongoose.connect(url)
-
-// const noteSchema = new mongoose.Schema({
-//   content: String,
-//   important: Boolean,
-// })
 
 app.use(express.static('dist'))
 
@@ -73,17 +67,15 @@ app.post('/api/notes', (request, response) => {
 })
 
 app.put('/api/notes/:id', (request, response, next) => {
-    const { content, important } = request.body
+    const body = request.body
+    const note = {
+        content: body.content,
+        important: body.important
+    }
 
-    const updatedNote = { content, important }
-
-    Note.findByIdAndUpdate(request.params.id, updatedNote, { new: true, runValidators: true })
+    Note.findByIdAndUpdate(request.params.id, note, { new: true }) // con new... la función devolverá el documento después de haber sido actualizado.
         .then(updatedNote => {
-            if (updatedNote) {
-                response.json(updatedNote)
-            } else {
-                response.status(404).json({ error: 'Note not found' })
-            }
+            response.json(updatedNote)
         })
         .catch(error => next(error))
 })
@@ -100,11 +92,12 @@ app.get('/api/notes/:id', (request, response, next) => {
         .catch(error => next(error))
 })
 
-app.delete('/api/notes/:id', (request, response) => {
-    const id = Number(request.params.id)
-    notes = notes.filter(note => note.id !== id)
-  
-    response.status(204).end()
+app.delete('/api/notes/:id', (request, response, next) => {
+    Note.findByIdAndDelete(request.params.id)
+        .then(() => {
+            response.status(204).end()
+        })
+        .catch(error => next(error))
 })
 
 app.use(unknownEndpoint)
