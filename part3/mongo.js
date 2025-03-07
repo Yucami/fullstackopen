@@ -12,7 +12,7 @@ const url =
 
 mongoose.set('strictQuery',false)
 
-mongoose.connect(url)
+// mongoose.connect(url)
 
 const noteSchema = new mongoose.Schema({
   content: String,
