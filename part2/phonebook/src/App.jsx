@@ -75,34 +75,23 @@ const App = () => {
         console.error('Error fetching persons:', error);
       });
   }, []);
-
-  // useEffect(() => {
-  //   numbersService
-  //     .getAll()
-  //     .then(response => {
-  //       console.log("API response:", response);
-  //       console.log("Persons data:", response.data);
-  //       console.log("Tipo de datos recibidos:", typeof response.data);
-  //       if (Array.isArray(response.data)) {
-  //         setPersons(response.data);
-  //       } else {
-  //         console.error("Error: La API no devuelve un array");
-  //         setPersons([]); // Evitar que sea undefined
-  //       }
-  //     })
-  //     .catch(error => {
-  //       console.error('Error fetching persons:', error);
-  //     });
-  // }, []);
   
   console.log('render', persons.length, 'persons');
 
   const addPerson = (event) => {
     event.preventDefault();
+    
     const existingPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase());
+     if (!newName || !newNumber) {
+      alert('Both name and number are required!');
+      return;
+    }
     if (existingPerson) {
       if (window.confirm(`${newName} is already added to phonebook, replace the old number with a new one?`)) {
         const updatedPerson = { ...existingPerson, number: newNumber };
+
+        console.log("Updating person:", updatedPerson); // Para depurar
+
         numbersService.update(existingPerson.id, updatedPerson).then(returnedPerson => {
           setPersons(persons.map(person => person.id !== existingPerson.id ? person : returnedPerson));
           setNewName('');
@@ -122,7 +111,7 @@ const App = () => {
     } else {
       const personObject = {
         name: newName,  
-        number: newNumber,
+        number: newNumber
       };
 
       numbersService.create(personObject).then(returnedPerson => {
