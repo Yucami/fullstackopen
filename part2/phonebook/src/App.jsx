@@ -82,7 +82,7 @@ const App = () => {
     event.preventDefault();
     
     const existingPerson = persons.find(person => person.name.toLowerCase() === newName.toLowerCase());
-     if (!newName || !newNumber) {
+    if (!newName || !newNumber) {
       alert('Both name and number are required!');
       return;
     }
@@ -103,7 +103,7 @@ const App = () => {
             setMessageType('');
           }, 5000);
         }).catch(error => {
-          setMessage(`Error updating ${existingPerson.name}`);
+          setMessage(error.response?.data?.error || `Error updating ${existingPerson.name}`);
           setMessageType('error');
           console.error('Error updating person:', error);
         });
@@ -124,7 +124,7 @@ const App = () => {
           setMessage(null);
         }, 5000);
       }).catch(error => {
-        setMessage(`Error adding ${newName}`);
+        setMessage(error.response?.data?.error || `Error adding ${newName}`);
         setMessageType('error');
         console.error('Error adding person:', error);
       });
