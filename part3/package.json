@@ -10,7 +10,8 @@
     "build:ui": "rm -rf dist && cd ../notes-frontend/ && npm run build && cp -r dist ../notes-backend",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
-    "logs:prod": "fly logs"
+    "logs:prod": "fly logs",
+    "lint": "eslint ."
   },
   "author": "Odaya",
   "license": "MIT",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.6",
+    "@stylistic/eslint-plugin-js": "^4.2.0",
     "nodemon": "^3.1.9"
   }
 }

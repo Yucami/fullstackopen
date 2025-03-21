@@ -7,7 +7,7 @@ mongoose.set('strictQuery', false)
 console.log('connecting to', url)
 
 mongoose.connect(url)
-  .then(result => {
+  .then(() => {  // he borrado 'result' porque eslint me lo marcabab como error por no usarse.
     console.log('connected to MongoDB')
   })
   .catch(error => {
@@ -15,7 +15,11 @@ mongoose.connect(url)
   })
 
 const noteSchema = new mongoose.Schema({
-  content: String,
+  content: {
+    type: String,
+    minlength: 5,
+    required: true
+  },
   important: Boolean,
 })
 
@@ -26,6 +30,5 @@ noteSchema.set('toJSON', {
     delete returnedObject.__v
   }
 })
-
 
 module.exports = mongoose.model('Note', noteSchema)

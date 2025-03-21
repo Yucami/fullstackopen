@@ -1,7 +1,7 @@
-PUT http://localhost:3001/api/notes/67c9de09295176bf8c0b8812
+PUT http://localhost:3001/api/notes/67d30bb23ef0c6aef0f57173
 Content-Type: application/json
 
 {
-  "content": "prueba para editar nota",
+  "content": "lol",
   "important": true
-  }
+}
