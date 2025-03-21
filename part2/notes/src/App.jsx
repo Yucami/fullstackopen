@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios'; // ya se importa en notes.js
 import Note from './components/Note';
 import Notification from './components/Notification';
 import noteService from './services/notes';
@@ -23,6 +23,7 @@ const App = () => {
   const [newNote, setNewNote] = useState('')
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [message, setMessage] = useState('');
 
 
   useEffect(() => {
@@ -68,10 +69,15 @@ const App = () => {
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
         setNewNote('')
+        setMessage(`Added note: ${returnedNote.content}`);
+        setTimeout(() => {
+          setMessage(null);
+        }, 5000);
       })
       .catch(error => {
         console.error('Error adding note:', error);
-        setErrorMessage('Error adding note. Please try again.');
+        setErrorMessage(error.response?.data?.error || 'Error adding note. Please try again.');
+
         setTimeout(() => setErrorMessage(null), 5000);
       });  
   };
@@ -88,7 +94,7 @@ const App = () => {
   return (
     <div>
       <h1>Notes</h1>
-      <Notification message={errorMessage} />
+      <Notification message={message || errorMessage} />
       <div>
         <button onClick={() => setShowAll(!showAll)}>
           show {showAll ? 'important' : 'all' }
