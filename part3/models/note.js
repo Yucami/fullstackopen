@@ -1,24 +1,10 @@
 const mongoose = require('mongoose')
 
-const url = process.env.MONGODB_URI
-
-mongoose.set('strictQuery', false)
-
-console.log('connecting to', url)
-
-mongoose.connect(url)
-  .then(() => {  // he borrado 'result' porque eslint me lo marcabab como error por no usarse.
-    console.log('connected to MongoDB')
-  })
-  .catch(error => {
-    console.log('error connecting to MongoDB:', error.message)
-  })
-
 const noteSchema = new mongoose.Schema({
   content: {
     type: String,
-    minlength: 5,
-    required: true
+    required: true,
+    minlength: 5
   },
   important: Boolean,
 })
