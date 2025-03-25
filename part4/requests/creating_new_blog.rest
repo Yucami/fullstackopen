@@ -2,8 +2,8 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "La red púrpura",
+  "title": "Las madres",
   "author": "Carmen Mola",
-  "url": "https://www.casadellibro.com/libro-la-red-purpura-serie-inspectora-elena-blanco-2/9788420435572/9083578?srsltid=AfmBOoqQCKr3ANPeEwoE8P6MVWvse7BdWCeJBw_oOVHRNoaUHszwLjDS",
+  "url": "https://www.casadellibro.com/libro-las-madres-la-novia-gitana-4/9788420456027/578578?srsltid=AfmBOoo8119grLCu7pjxThFoc2BGFt886nUDKP-Yh0cLe98rddRvyl7a",
   "likes": 0
 }
