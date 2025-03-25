@@ -1,0 +1,9 @@
+POST http://localhost:3003/api/blogs
+Content-Type: application/json
+
+{
+  "title": "La red púrpura",
+  "author": "Carmen Mola",
+  "url": "https://www.casadellibro.com/libro-la-red-purpura-serie-inspectora-elena-blanco-2/9788420435572/9083578?srsltid=AfmBOoqQCKr3ANPeEwoE8P6MVWvse7BdWCeJBw_oOVHRNoaUHszwLjDS",
+  "likes": 0
+}
