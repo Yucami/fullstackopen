@@ -43,6 +43,28 @@ test.only('the unique identifier property og the blog posts is named id', async 
     assert.strictEqual(firstBlog._id, undefined, 'Property _id should not exist')
 })
 
+test.only('a valid blog can be added ', async () => {
+    const newBlog = {
+        title: "Reina Roja", 
+        author: "Juan Gómez-Jurado", 
+        url: "https://juangomezjurado.com/libro/reina-roja/", 
+        likes: 11, 
+        id: "67e409a42cc8d11e96ebc93f"
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+        .expect('Content-Type', /application\/json/)
+
+    const blogsAtEnd = await helper.blogsInDb()
+    assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
+
+    const titles = blogsAtEnd.map(n => n.title)
+    assert(titles.includes('Reina Roja'))
+})
+
 after(async () => {
     await mongoose.connection.close()
 })
