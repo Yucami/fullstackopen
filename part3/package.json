@@ -4,14 +4,14 @@
   "description": "Notes part2 backend",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
-    "dev": "nodemon index.js",
+    "start": "NODE_ENV=production node index.js",
+    "dev": "NODE_ENV=development nodemon index.js",
+    "test": "NODE_ENV=test node --test",
     "build:ui": "rm -rf dist && cd ../notes-frontend/ && npm run build && cp -r dist ../notes-backend",
     "deploy": "fly deploy",
     "deploy:full": "npm run build:ui && npm run deploy",
     "logs:prod": "fly logs",
-    "lint": "eslint .",
-    "test": "node --test"
+    "lint": "eslint ."
   },
   "author": "Odaya",
   "license": "MIT",
@@ -19,6 +19,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
+    "express-async-errors": "^3.1.1",
     "mongodb": "^6.14.0",
     "mongoose": "^8.11.0",
     "morgan": "^1.10.0"
@@ -26,6 +27,7 @@
   "devDependencies": {
     "@flydotio/dockerfile": "^0.7.6",
     "@stylistic/eslint-plugin-js": "^4.2.0",
-    "nodemon": "^3.1.9"
+    "nodemon": "^3.1.9",
+    "supertest": "^7.1.0"
   }
 }
