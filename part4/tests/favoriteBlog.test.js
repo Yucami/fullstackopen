@@ -1,6 +1,6 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const favoriteBlog = require('../utils/list_helper.test').favoriteBlog
+const favoriteBlog = require('../utils/list_helper').favoriteBlog
 
 describe('Favorite blog', () => {
     const listWithOneBlog = [

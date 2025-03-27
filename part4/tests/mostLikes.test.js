@@ -1,6 +1,6 @@
 const { test, describe } = require('node:test')
 const assert = require('node:assert')
-const mostLikes = require('../utils/list_helper.test').mostLikes
+const mostLikes = require('../utils/list_helper').mostLikes
 
 describe('Author with most likes', () => {
     test('should return the author with the most likes', () => {

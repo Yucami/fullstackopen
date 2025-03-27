@@ -6,8 +6,8 @@ const blogsRouter = require('./controllers/blogs')
 const mongoose = require('mongoose')
 
 mongoose.set('strictQuery', false)
-console.log('MongoDB URI:', process.env.MONGODB_URI)
 mongoose.connect(config.mongoUrl)
+console.log('MongoDB URI:', config.mongoUrl)
 
 app.use(cors())
 app.use(express.json())
