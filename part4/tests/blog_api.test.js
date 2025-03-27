@@ -18,11 +18,17 @@ beforeEach(async () => {
     }
 })
 
-test('blogs are returned as json', async () => {
+test.only('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
     .expect(200)
     .expect('Content-Type', /application\/json/)
+})
+
+test.only('all blogs are returned', async () => {
+  const response = await api.get('/api/blogs')
+
+  assert.strictEqual(response.body.length, helper.initialBlogs.length)
 })
 
 after(async () => {
