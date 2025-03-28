@@ -1,0 +1,10 @@
+PUT http://localhost:3003/api/blogs/67e40cbc2cc8d11e96ebc959
+Content-Type: application/json
+
+{
+    "title": "Los alemanes",
+    "author": "Sergio del Molino",
+    "url": "https://www.amazon.es/alemanes-Premio-Alfaguara-novela-Hisp%C3%A1nica/dp/842047682X",
+    "likes": 1,
+    "id": "67e40cbc2cc8d11e96ebc959"
+  }

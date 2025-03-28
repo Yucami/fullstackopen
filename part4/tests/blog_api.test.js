@@ -135,6 +135,21 @@ describe('when there is initially some blogs saved', () => {
                 .expect(400)
         })
     })
+
+    describe('updating a blog', () => {
+        test('a blog can be updated with likes', async () => {
+            const initialBlog = await Blog.findOne({ title: 'Todo esto te daré' })
+            const updatedBlog = { likes: 333 }
+
+            const response = await api
+                .put(`/api/blogs/${initialBlog.id}`)
+                .send(updatedBlog)
+                .expect(200)
+                .expect('Content-Type', /application\/json/)
+            
+            assert.strictEqual(response.body.likes, updatedBlog.likes)
+        })
+    })
 })
 
 after(async () => {
