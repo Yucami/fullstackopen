@@ -8,6 +8,8 @@ const app = require('../app')
 const api = supertest(app)
 
 const Blog = require('../models/blog')
+const { url } = require('node:inspector')
+const { title } = require('node:process')
 
 beforeEach(async () => {
     await Blog.deleteMany({})
@@ -18,14 +20,14 @@ beforeEach(async () => {
     }
 })
 
-test.only('blogs are returned as json', async () => {
+test('blogs are returned as json', async () => {
     await api
         .get('/api/blogs')
         .expect(200)
         .expect('Content-Type', /application\/json/)
 })
 
-test.only('all blogs are returned', async () => {
+test('all blogs are returned', async () => {
     const response = await api.get('/api/blogs')
 
     assert.strictEqual(response.body.length, helper.initialBlogs.length)
@@ -43,7 +45,7 @@ test.only('the unique identifier property og the blog posts is named id', async 
     assert.strictEqual(firstBlog._id, undefined, 'Property _id should not exist')
 })
 
-test.only('a valid blog can be added ', async () => {
+test('a valid blog can be added ', async () => {
     const newBlog = {
         title: "Reina Roja",
         author: "Juan Gómez-Jurado",
@@ -79,6 +81,30 @@ test.only('if the likes property is missing from the request, it will default to
     const blogsAtEnd = await helper.blogsInDb()
 
     assert.strictEqual(response.body.likes, 0)
+})
+
+test.only('if the title and url properties are missing, the backend responds with 400 Bad Request', async () => {
+    const newBlogWithoutTitle = {
+        author: "Anonimo",
+        url: "https://www.anonimo.com",
+        likes: 5
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlogWithoutTitle)
+        .expect(400)
+
+    const newBlogWithoutUrl = {
+        title: "Sin url",
+        author: "Anonimo",
+        likes: 4
+    }
+
+    await api
+        .post('/api/blogs')
+        .send(newBlogWithoutUrl)
+        .expect(400)
 })
 
 after(async () => {
