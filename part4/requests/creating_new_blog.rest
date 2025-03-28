@@ -2,8 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "La piel",
-  "author": "Sergio del Molino",
-  "url": "https://www.amazon.es/piel-Sergio-del-Molino-ebook/dp/B085ZQ632P?ref_=ast_author_dp&dib=eyJ2IjoiMSJ9.P_edkcWi-5kX2r0wQzDSy3dTrb2TIPWPN3AsHKE2pw4UITyiYXH5JchKQPz56SvpBekxl4zxG0r6Q8_QBpwVCwBGKTlzIbTbODbyQaxKToksjryfqew6zaQyM0lL0RTEAlDOCfFiBxY6rs9Oz2DlvipWx2ea_bvIxYj-IFwUeJOAYnXR1uvPuznXarELVUPLulA_E9lOAp02qyT4fO-laLP3E6nb5aHNdB1BJI8W0U0.uyndPGgy9zblJbKbdwdVAFqHFeL7_yb8Wubu3Zlzu3g&dib_tag=AUTHORhttps://www.amazon.es/piel-Sergio-del-Molino-ebook/dp/B085ZQ632P?ref_=ast_author_dp&dib=eyJ2IjoiMSJ9.P_edkcWi-5kX2r0wQzDSy3dTrb2TIPWPN3AsHKE2pw4UITyiYXH5JchKQPz56SvpBekxl4zxG0r6Q8_QBpwVCwBGKTlzIbTbODbyQaxKToksjryfqew6zaQyM0lL0RTEAlDOCfFiBxY6rs9Oz2DlvipWx2ea_bvIxYj-IFwUeJOAYnXR1uvPuznXarELVUPLulA_E9lOAp02qyT4fO-laLP3E6nb5aHNdB1BJI8W0U0.uyndPGgy9zblJbKbdwdVAFqHFeL7_yb8Wubu3Zlzu3g&dib_tag=AUTHOR",
-  "likes": 4
+  "title": "prueba POST LIKE 0",
+  "author": "Odaya",
+  "url": "http://www.odaya.com"
 }

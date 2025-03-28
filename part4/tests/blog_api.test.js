@@ -45,10 +45,10 @@ test.only('the unique identifier property og the blog posts is named id', async 
 
 test.only('a valid blog can be added ', async () => {
     const newBlog = {
-        title: "Reina Roja", 
-        author: "Juan Gómez-Jurado", 
-        url: "https://juangomezjurado.com/libro/reina-roja/", 
-        likes: 11, 
+        title: "Reina Roja",
+        author: "Juan Gómez-Jurado",
+        url: "https://juangomezjurado.com/libro/reina-roja/",
+        likes: 11,
         id: "67e409a42cc8d11e96ebc93f"
     }
 
@@ -63,6 +63,22 @@ test.only('a valid blog can be added ', async () => {
 
     const titles = blogsAtEnd.map(n => n.title)
     assert(titles.includes('Reina Roja'))
+})
+
+test.only('if the likes property is missing from the request, it will default to 0', async () => {
+    const newBlog = {
+        title: "La novia gitana",
+        author: "Carmen Mola",
+        url: "https://www.casadellibro.com/libro-la-novia-gitana-serie-inspectora-elena-blanco-1/9788420433189/6409431?srsltid=AfmBOoqt2fJGYowvpuwLvznOrZiW2EuCt6flIza-ppu0fB9L-lskzeSi",
+    }
+    const response = await api
+        .post('/api/blogs')
+        .send(newBlog)
+        .expect(201)
+
+    const blogsAtEnd = await helper.blogsInDb()
+
+    assert.strictEqual(response.body.likes, 0)
 })
 
 after(async () => {
