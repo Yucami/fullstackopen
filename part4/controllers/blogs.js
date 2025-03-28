@@ -1,5 +1,7 @@
 const blogsRouter = require('express').Router()
+const { result } = require('lodash')
 const Blog = require('../models/blog')
+const mongoose = require('mongoose')
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({})
@@ -23,6 +25,22 @@ blogsRouter.post('/', async (request, response) => {
     const savedBlog = await blog.save()
     console.log(savedBlog)
     response.status(201).json(savedBlog)
+})
+
+blogsRouter.delete('/:id', async (request, response) => {
+    const { id } = request.params
+
+    if (!mongoose.Types.ObjectId.isValid(id)) {
+        return response.status(400).send({ error: 'Invalid blog ID' })
+    }
+
+    const blog = await Blog.findById(id)
+    if (!blog) {
+        return response.status(404).send({ error: 'Blog not found' })
+    }
+
+    await Blog.findByIdAndDelete(id)
+    response.status(204).end()
 })
 
 module.exports = blogsRouter
