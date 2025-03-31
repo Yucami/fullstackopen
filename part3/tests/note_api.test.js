@@ -4,10 +4,12 @@ const supertest = require('supertest')
 const mongoose = require('mongoose')
 const app = require('../app')
 const api = supertest(app)
+const bcrypt = require('bcrypt')
 
 const helper = require('./test_helper')
 
 const Note = require('../models/note')
+const User = require('../models/user')
 
 describe('when there is initially some notes saved', () => {
     beforeEach(async () => {
@@ -69,8 +71,9 @@ describe('when there is initially some notes saved', () => {
     describe('addition of a new note', () => {
         test('succeeds with valid data', async () => {
             const newNote = {
-                content: 'async/await simplifies making async calls',
+                content: 'prueba con id de usuario',
                 important: true,
+                userId: '67ea9f3ea5e8e96ffb834170'
             }
 
             await api
@@ -83,7 +86,7 @@ describe('when there is initially some notes saved', () => {
             assert.strictEqual(notesAtEnd.length, helper.initialNotes.length + 1)
 
             const contents = notesAtEnd.map(n => n.content)
-            assert(contents.includes('async/await simplifies making async calls'))
+            assert(contents.includes('prueba con id de usuario'))
         })
 
         test('fails with status code 400 if data invalid', async () => {
@@ -118,6 +121,60 @@ describe('when there is initially some notes saved', () => {
             const contents = notesAtEnd.map(r => r.content)
             assert(!contents.includes(noteToDelete.content))
         })
+    })
+})
+
+describe('when there is initially one user in db', () => {
+    beforeEach(async () => {
+        await User.deleteMany({})
+
+        const passwordHash = await bcrypt.hash('sekret', 10)
+        const user = new User({ username: 'root', passwordHash })
+
+        await user.save()
+    })
+
+    test('creation succeeds with a fresh username', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'mluukkai',
+            name: 'Matti Luukkainen',
+            password: 'salainen',
+        }
+
+        await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(201)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length + 1)
+
+        const usernames = usersAtEnd.map(u => u.username)
+        assert(usernames.includes(newUser.username))
+    })
+
+    test('creation fails with proper statuscode and message if username already taken', async () => {
+        const usersAtStart = await helper.usersInDb()
+
+        const newUser = {
+            username: 'root',
+            name: 'Superuser',
+            password: 'salainen',
+        }
+
+        const result = await api
+            .post('/api/users')
+            .send(newUser)
+            .expect(400)
+            .expect('Content-Type', /application\/json/)
+
+        const usersAtEnd = await helper.usersInDb()
+        assert(result.body.error.includes('expected `username` to be unique'))
+
+        assert.strictEqual(usersAtEnd.length, usersAtStart.length)
     })
 })
 

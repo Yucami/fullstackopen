@@ -1,8 +1,9 @@
 POST http://localhost:3001/api/notes
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRpZWdvIiwiaWQiOiI2N2VhZTE3MTdkZjA2MmVjZDAyZGFiOGEiLCJpYXQiOjE3NDM0NDY1MDB9.ESHFmBRqEEiAHBzevAbuVs-HWRjJ-PsqLrJJj82Ybbs
 
 {
-  "content": "ody",
+  "content": "Prueba: Refactorizando el código de notes.js",
   "important": true
 }
 
