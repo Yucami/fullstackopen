@@ -1,6 +1,7 @@
 const blogsRouter = require('express').Router()
 const { result } = require('lodash')
 const Blog = require('../models/blog')
+const User = require('../models/user')
 const mongoose = require('mongoose')
 
 blogsRouter.get('/', async (request, response) => {

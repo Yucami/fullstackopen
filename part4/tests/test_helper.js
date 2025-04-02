@@ -1,4 +1,5 @@
 const Blog = require('../models/blog')
+const User = require('../models/user')
 
 const initialBlogs = [
     { "title": "Todo esto te daré", "author": "Dolores Redondo", "url": "https://www.doloresredondo.com/item/novela-todo-esto-te-dare/", "likes": 11, "id": "67e40bb92cc8d11e96ebc953" },
@@ -25,6 +26,13 @@ const blogsInDb = async () => {
     return blogs.map(blog => blog.toJSON())
 }
 
+const usersInDb = async () => {
+    const users = await User.find({})
+    console.log('Usuarios actuales en la base de datos:', users) // 🔍 Agregar este log
+
+    return users.map(user => user.toJSON())
+}
+
 module.exports = {
-    initialBlogs, nonExistingId, blogsInDb
+    initialBlogs, nonExistingId, blogsInDb, usersInDb
 }
