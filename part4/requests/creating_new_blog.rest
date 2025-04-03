@@ -1,9 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9kYXlhIiwiaWQiOiI2N2VlYjc1NGY3ODA0Y2Y2MTQ3ZmRmNzciLCJpYXQiOjE3NDM2OTgzMDR9.7cVEkRl8EN5UzPdtn11LREniA4vQ9x3uo663XH_1l-I
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6InBlZHJvIiwiaWQiOiI2N2VlZmJhZjI1YjJmYTFhMGY5YjgyY2MiLCJpYXQiOjE3NDM3MTUyNzl9.wx5rusLk_2iNw8RYNmTD0heGAvfMdc0jCWFKH2GgwII
 
 {
-  "title": "prueba REFACTORIZANDO MIDDLEWARE del token",
+  "title": "prueba 4 REFACTORIZANDO MIDDLEWARE del user",
   "author": "prueba de blog con userId",
   "url": "http://www.odaya.com"
 }
