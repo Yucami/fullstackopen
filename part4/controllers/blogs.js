@@ -3,11 +3,20 @@ const { result } = require('lodash')
 const Blog = require('../models/blog')
 const User = require('../models/user')
 const mongoose = require('mongoose')
+const jwt = require('jsonwebtoken')
 
 blogsRouter.get('/', async (request, response) => {
     const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
     response.json(blogs)
 })
+
+const getTokenFrom = request => {
+    const authorization = request.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+        return authorization.replace('Bearer ', '')
+    }
+    return null
+}
 
 blogsRouter.post('/', async (request, response) => {
     const body = request.body
@@ -15,12 +24,16 @@ blogsRouter.post('/', async (request, response) => {
     if (!body.title || !body.url) {
         return response.status(400).json({ error: 'title or url missing' })
     }
+    const decodedToken = jwt.verify(getTokenFrom(request), process.env.SECRET)
+    if (!decodedToken.id) {
+      return response.status(401).json({ error: 'token invalid' })
+    }
+    const user = await User.findById(decodedToken.id)
 
     const users = await User.find({})
     if (users.length === 0) {
         return response.status(400).json({ error: 'No users found' })
     }
-    const user = users[0] // asignar el primer ususario encontrado
     
     const blog = new Blog({
         title: body.title,

@@ -1,8 +1,9 @@
 POST http://localhost:3003/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im9kYXlhIiwiaWQiOiI2N2VlYjc1NGY3ODA0Y2Y2MTQ3ZmRmNzciLCJpYXQiOjE3NDM2OTgzMDR9.7cVEkRl8EN5UzPdtn11LREniA4vQ9x3uo663XH_1l-I
 
 {
-  "title": "PRUEBA 3 con el primer userid",
+  "title": "prueba con token",
   "author": "prueba de blog con userId",
   "url": "http://www.odaya.com"
 }
