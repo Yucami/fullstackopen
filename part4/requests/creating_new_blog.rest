@@ -2,8 +2,7 @@ POST http://localhost:3003/api/blogs
 Content-Type: application/json
 
 {
-  "title": "prueba para vincular con user",
-  "author": "Odaya",
-  "url": "http://www.odaya.com",
-  "user": "67ed224a54d5f5266e24e48d"
+  "title": "PRUEBA 3 con el primer userid",
+  "author": "prueba de blog con userId",
+  "url": "http://www.odaya.com"
 }
