@@ -28,7 +28,7 @@ const blogsInDb = async () => {
 
 const usersInDb = async () => {
     const users = await User.find({})
-    console.log('Usuarios actuales en la base de datos:', users) // 🔍 Agregar este log
+    console.log('Usuarios actuales en la base de datos:', users) 
 
     return users.map(user => user.toJSON())
 }
