@@ -33,6 +33,20 @@ const usersInDb = async () => {
     return users.map(user => user.toJSON())
 }
 
+const getTokenForUser = async (api, user) => {
+    await User.findOneAndDelete({ username: user.username })
+
+    await api
+        .post('/api/users')
+        .send(user)
+
+    const loginResponse = await api
+        .post('/api/login')
+        .send({ username: user.username, password: user.password })
+
+    return loginResponse.body.token
+}
+
 module.exports = {
-    initialBlogs, nonExistingId, blogsInDb, usersInDb
+    initialBlogs, nonExistingId, blogsInDb, usersInDb, getTokenForUser
 }

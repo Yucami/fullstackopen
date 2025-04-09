@@ -10,10 +10,18 @@ const helper = require('./test_helper')
 
 const Blog = require('../models/blog')
 
+let token
+
 describe('when there is initially some blogs saved', () => {
     beforeEach(async () => {
         await Blog.deleteMany({})
         await Blog.insertMany(helper.initialBlogs)
+
+        token = await helper.getTokenForUser(api, {
+            username: 'testuser',
+            name: 'Test User',
+            password: 'testpassword'
+        })
     })
 
     test('blogs are returned as json', async () => {
@@ -42,17 +50,15 @@ describe('when there is initially some blogs saved', () => {
     })
 
     describe('adding a new blog', () => {
-        test('a valid blog can be added ', async () => {
+        test('a valid blog with valid token ', async () => {
             const newBlog = {
-                title: "Reina Roja",
-                author: "Juan Gómez-Jurado",
-                url: "https://juangomezjurado.com/libro/reina-roja/",
-                likes: 11,
-                id: "67e409a42cc8d11e96ebc93f"
+                title: "titulo prueba",
+                url: "https://www.google.com"
             }
 
             await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlog)
                 .expect(201)
                 .expect('Content-Type', /application\/json/)
@@ -60,8 +66,26 @@ describe('when there is initially some blogs saved', () => {
             const blogsAtEnd = await helper.blogsInDb()
             assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length + 1)
 
-            const titles = blogsAtEnd.map(n => n.title)
-            assert(titles.includes('Reina Roja'))
+            const titles = blogsAtEnd.map(b => b.title)
+            assert(titles.includes('titulo prueba'))
+        })
+
+        test('adding a blog fails with 401 Unauthorized if token is missing', async () => {
+            const newBlog = {
+                title: "Reina Roja",
+                author: "Juan Gómez-Jurado",
+                url: "https://juangomezjurado.com/libro/reina-roja/",
+                likes: 11
+            }
+
+            await api
+                .post('/api/blogs')
+                .send(newBlog)
+                .expect(401)
+                .expect('Content-Type', /application\/json/)
+
+            const blogsAtEnd = await helper.blogsInDb()
+            assert.strictEqual(blogsAtEnd.length, helper.initialBlogs.length)
         })
 
         test('if the likes property is missing from the request, it will default to 0', async () => {
@@ -72,6 +96,7 @@ describe('when there is initially some blogs saved', () => {
             }
             const response = await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlog)
                 .expect(201)
                 .expect('Content-Type', /application\/json/)
@@ -88,6 +113,7 @@ describe('when there is initially some blogs saved', () => {
 
             await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlogWithoutTitle)
                 .expect(400)
 
@@ -99,6 +125,7 @@ describe('when there is initially some blogs saved', () => {
 
             await api
                 .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
                 .send(newBlogWithoutUrl)
                 .expect(400)
         })
@@ -106,15 +133,29 @@ describe('when there is initially some blogs saved', () => {
 
     describe('delection of a blog', () => {
         test('succeeds with status code 204 if id is valid', async () => {
-            const blogsAtStart = await helper.blogsInDb()
-            const blogToDelete = blogsAtStart[0]
+
+            const newBlog = {
+                title: "Blog a aliminar",
+                author: "Autor",
+                url: "https://www.delete.com",
+                likes: 2
+            }
+
+            const postResponse = await api
+                .post('/api/blogs')
+                .set('Authorization', `Bearer ${token}`)
+                .send(newBlog)
+                .expect(201)
+
+            const blogToDelete = postResponse.body
+
 
             await api
                 .delete(`/api/blogs/${blogToDelete.id}`)
+                .set('Authorization', `Bearer ${token}`)
                 .expect(204)
 
             const blogsAtEnd = await helper.blogsInDb()
-            assert.strictEqual(blogsAtEnd.length, blogsAtStart.length - 1)
 
             const titles = blogsAtEnd.map(b => b.title)
             assert(!titles.includes(blogToDelete.title))
@@ -125,6 +166,7 @@ describe('when there is initially some blogs saved', () => {
 
             await api
                 .delete(`/api/blogs/${validNonexistingId}`)
+                .set('Authorization', `Bearer ${token}`)
                 .expect(404)
         })
 
@@ -133,6 +175,7 @@ describe('when there is initially some blogs saved', () => {
 
             await api
                 .delete(`/api/blogs/${invalidId}`)
+                .set('Authorization', `Bearer ${token}`)
                 .expect(400)
         })
     })
