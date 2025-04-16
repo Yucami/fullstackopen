@@ -6,6 +6,12 @@
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test node --test",
+    "build": "vite build",
+    "build:ui": "cd ../part5/bloglist-frontend && npm run build",
+    "copy:ui": "cp -r ../part5/bloglist-frontend/dist ./dist",
+    "deploy": "fly deploy",
+    "deploy:full": "npm run build:ui && npm run copy:ui",    
+    "logs:prod": "fly logs",
     "lint": "eslint ."
   },
   "author": "Odaya",

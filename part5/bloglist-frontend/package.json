@@ -6,10 +6,6 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "build:ui": "rm -rf dist && cd ../part5/bloglist-frontend/ && npm run build && cp -r dist ../part4",
-    "deploy": "fly deploy",
-    "deploy:full": "npm run build:ui && npm run deploy",    
-    "logs:prod": "fly logs",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview"
   },
