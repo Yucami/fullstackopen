@@ -1,0 +1,25 @@
+# fly.toml app configuration file generated for part4-crimson-cherry-2643 on 2025-04-10T12:37:28+02:00
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = 'part4-crimson-cherry-2643'
+primary_region = 'mad'
+
+[build]
+
+[env]
+  PORT = "3003"
+
+[http_service]
+  internal_port = 3003
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0
+  processes = ['app']
+
+[[vm]]
+  memory = '1gb'
+  cpu_kind = 'shared'
+  cpus = 1
