@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import BlogForm from './components/BlogForm'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
@@ -81,6 +82,15 @@ const App = () => {
     )
   }
 
+  const createBlog = async (newBlog) => {
+    try {
+      const returnedBlog = await blogService.create(newBlog)
+      setBlogs(blogs.concat(returnedBlog))
+    } catch (error) {
+      console.error('Error creating blog:', error)
+    }
+  }
+
   return (
     <div>
       <h2>blogs</h2>
@@ -89,6 +99,8 @@ const App = () => {
         {user.name} logged in
         <button onClick={handleLogout}>logout</button>
       </p>
+
+      <BlogForm createBlog={createBlog} />
 
       {blogs.map(blog =>
         <Blog key={blog.id} blog={blog} />
