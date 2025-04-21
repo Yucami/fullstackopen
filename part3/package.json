@@ -7,9 +7,10 @@
     "start": "NODE_ENV=production node index.js",
     "dev": "NODE_ENV=development nodemon index.js",
     "test": "NODE_ENV=test node --test",
-    "build:ui": "rm -rf dist && cd ../notes-frontend/ && npm run build && cp -r dist ../notes-backend",
+    "build:ui": "rm -rf ../part2/notes/dist && cd ../part2/notes/ && npm run build",
+    "copy:ui": "rm -rf ./dist && cp -r ../part2/notes/dist ./dist",
     "deploy": "fly deploy",
-    "deploy:full": "npm run build:ui && npm run deploy",
+    "deploy:full": "npm run build:ui && npm run copy:ui",    
     "logs:prod": "fly logs",
     "lint": "eslint ."
   },
