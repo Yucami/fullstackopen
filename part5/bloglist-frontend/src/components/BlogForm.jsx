@@ -19,7 +19,7 @@ const BlogForm = ({ createBlog }) => {
 
     return (
         <form onSubmit={handleSubmit}>
-            <h2>Crear nuevo blog</h2>
+            <h2>Create new blog</h2>
             <div>
                 título:
                 <input
