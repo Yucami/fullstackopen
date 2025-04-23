@@ -81,7 +81,15 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     try {
       const returnedBlog = await blogService.create(newBlog)
-      setBlogs(blogs.concat(returnedBlog))
+      const blogWithUser = {
+        ...returnedBlog,
+        user: {
+          id: user.id,
+          name: user.name,
+          username: user.username
+        }
+      }
+      setBlogs(blogs.concat(blogWithUser))
       setMessage(`A new blog ${returnedBlog.title} by ${returnedBlog.author} added`)
       setMessageType('success')
       setTimeout(() => {
@@ -147,7 +155,13 @@ const App = () => {
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map(blog => (
-          <Blog key={blog.id} blog={blog} handleLike={handleLike} />
+          <Blog 
+            key={blog.id} 
+            blog={blog} 
+            handleLike={handleLike}
+            handleDelete={handleDelete}
+            user={user} 
+          />
         ))}
     </div>
   )
@@ -168,6 +182,28 @@ const App = () => {
     } catch (error) {
       console.error('Error liking blog:', error)
       setMessage('Error liking blog')
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
+
+  const handleDelete = async (blogToDelete) => {
+    const confirmDelete = window.confirm(`Delete "${blogToDelete.title}" by ${blogToDelete.author}?`)
+    if (!confirmDelete) return
+    
+    try {
+      await blogService.remove(blogToDelete.id)
+      setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
+      setMessage(`Deleted ${blogToDelete.title}`)
+      setMessageType('success')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    } catch (error) {
+      console.error('Error deleting blog:', error)
+      setMessage('Error deleting blog')
       setMessageType('error')
       setTimeout(() => {
         setMessage(null)
