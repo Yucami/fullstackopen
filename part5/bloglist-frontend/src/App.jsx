@@ -145,11 +145,33 @@ const App = () => {
       </Togglable>
 
       {blogs.map(blog => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} handleLike={handleLike} />
       ))}
     </div>
   )
 
+  const handleLike = async (blogToUpdate) => {
+    try {
+      const updatedBlog = {
+        ...blogToUpdate,
+        likes: blogToUpdate.likes + 1
+      }
+
+      const returnedBlog = await blogService.update(blogToUpdate.id, updatedBlog)
+      setBlogs(blogs.map(blog =>
+        blog.id === blogToUpdate.id 
+          ? returnedBlog
+          : blog
+      ))
+    } catch (error) {
+      console.error('Error liking blog:', error)
+      setMessage('Error liking blog')
+      setMessageType('error')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
+    }
+  }
 
   return (
     <div>
