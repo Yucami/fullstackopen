@@ -8,8 +8,8 @@ import Togglable from './components/Togglable'
 
 const App = () => {
   const [blogs, setBlogs] = useState([])
-  const [username, setUsername] = useState('') 
-  const [password, setPassword] = useState('') 
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [message, setMessage] = useState(null)
   const [messageType, setMessageType] = useState('')
@@ -38,7 +38,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password
@@ -155,12 +155,12 @@ const App = () => {
       {[...blogs]
         .sort((a, b) => b.likes - a.likes)
         .map(blog => (
-          <Blog 
-            key={blog.id} 
-            blog={blog} 
+          <Blog
+            key={blog.id}
+            blog={blog}
             handleLike={handleLike}
             handleDelete={handleDelete}
-            user={user} 
+            user={user}
           />
         ))}
     </div>
@@ -175,7 +175,7 @@ const App = () => {
 
       const returnedBlog = await blogService.update(blogToUpdate.id, updatedBlog)
       setBlogs(blogs.map(blog =>
-        blog.id === blogToUpdate.id 
+        blog.id === blogToUpdate.id
           ? returnedBlog
           : blog
       ))
@@ -192,7 +192,7 @@ const App = () => {
   const handleDelete = async (blogToDelete) => {
     const confirmDelete = window.confirm(`Delete "${blogToDelete.title}" by ${blogToDelete.author}?`)
     if (!confirmDelete) return
-    
+
     try {
       await blogService.remove(blogToDelete.id)
       setBlogs(blogs.filter(blog => blog.id !== blogToDelete.id))
@@ -213,7 +213,7 @@ const App = () => {
 
   return (
     <div>
-      {user === null ? renderForm() : renderBlogs()}  
+      {user === null ? renderForm() : renderBlogs()}
     </div>
   )
 }
