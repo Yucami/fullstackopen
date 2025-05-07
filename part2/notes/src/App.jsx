@@ -1,11 +1,11 @@
-import { useState, useEffect, useRef } from 'react';
-import Note from './components/Note';
-import Notification from './components/Notification';
-import noteService from './services/notes';
-import loginService from './services/login';
-import LoginForm from './components/LoginForm';
-import NoteForm from './components/NoteForm';
-import Togglable from './components/Togglable';
+import { useState, useEffect, useRef } from 'react'
+import Note from './components/Note'
+import Notification from './components/Notification'
+import noteService from './services/notes'
+import loginService from './services/login'
+import LoginForm from './components/LoginForm'
+import NoteForm from './components/NoteForm'
+import Togglable from './components/Togglable'
 
 const Footer = () => {
   const footerStyle = {
@@ -26,7 +26,7 @@ const App = () => {
   const [showAll, setShowAll] = useState(true)
   const [errorMessage, setErrorMessage] = useState(null)
   const [message, setMessage] = useState('')
-  const [username, setUsername] = useState('') 
+  const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
 
@@ -46,10 +46,10 @@ const App = () => {
       noteService.setToken(user.token)
     }
   }, [])
-  
+
   const toggleImportanceOf = id => {
     const note = notes.find(n => n.id === id)
-    if (!note) return;
+    if (!note) return
 
     const changedNote = { ...note, important: !note.important }
 
@@ -59,16 +59,16 @@ const App = () => {
         setNotes(notes.map(note => note.id !== id ? note : returnedNote))
       })
       .catch(error => {
-        console.error('Error updating note:', error);
+        console.error('Error updating note:', error)
         if (error.response && error.response.status === 404) {
-          setErrorMessage(`Note '${note.content}' was already removed from server`);
-          setNotes(notes.filter(n => n.id !== id));
+          setErrorMessage(`Note '${note.content}' was already removed from server`)
+          setNotes(notes.filter(n => n.id !== id))
         } else {
-          setErrorMessage('An error occurred. Please try again.');
+          setErrorMessage('An error occurred. Please try again.')
         }
-        setTimeout(() => setErrorMessage(null), 5000);
-      });
-  };
+        setTimeout(() => setErrorMessage(null), 5000)
+      })
+  }
 
   const addNote = (noteObject) => {
     noteFormRef.current.toggleVisibility()
@@ -76,18 +76,18 @@ const App = () => {
       .create(noteObject)
       .then(returnedNote => {
         setNotes(notes.concat(returnedNote))
-        setMessage(`Added note: ${returnedNote.content}`);
+        setMessage(`Added note: ${returnedNote.content}`)
         setTimeout(() => {
-          setMessage(null);
-        }, 5000);
+          setMessage(null)
+        }, 5000)
       })
       .catch(error => {
-        console.error('Error adding note:', error);
-        setErrorMessage(error.response?.data?.error || 'Error adding note. Please try again.');
+        console.error('Error adding note:', error)
+        setErrorMessage(error.response?.data?.error || 'Error adding note. Please try again.')
 
-        setTimeout(() => setErrorMessage(null), 5000);
-      });  
-  };
+        setTimeout(() => setErrorMessage(null), 5000)
+      })
+  }
 
   const notesToShow = showAll
     ? notes
@@ -95,7 +95,7 @@ const App = () => {
 
   const handleLogin = async (event) => {
     event.preventDefault()
-    
+
     try {
       const user = await loginService.login({
         username, password
@@ -114,7 +114,7 @@ const App = () => {
         setErrorMessage(null)
       }, 5000)
     }
-  }  
+  }
 
   const loginForm = () => (
     <Togglable buttonLabel='login'>
@@ -145,8 +145,8 @@ const App = () => {
         loginForm() :
         <div>
           <p>{user.name} logged-in</p>
-          {noteForm()}   
-        </div>   
+          {noteForm()}
+        </div>
       }
 
       <div>
@@ -156,15 +156,15 @@ const App = () => {
       </div>
       <ul>
         {notesToShow.map(note =>
-          <Note 
-            key={note.id} 
+          <Note
+            key={note.id}
             note={note}
             toggleImportance={() => toggleImportanceOf(note.id)}
           />
         )}
       </ul>
 
-      <Footer />   
+      <Footer />
     </div>
   )
 }
